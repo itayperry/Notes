@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+	<style>
+:root {
+	/*number of lines in the notebook:5 - this means there are 6 divs*/
+	--blueLineMarginTop: 34px;
+	--blueLIneTopBottomBorder: 1px;
+	--notebook-width: 600px;
+	--absoluteTextAreaLeftValue: 11%;
+	--absoluteNoteLeftValue: 10px;
+}
+
+body {		
+	font-family: 'Roboto Slab', serif;
+	background-image: url(images/tile.jpg);
+}
+
+@font-face {
+	font-family: "ZingEasy";
+	src: url("CSSfont/ZingEasy.ttf");
+}
+
+h1 {
+	font-family: ZingEasy;
+	font-size: 60px;
+	padding: 0px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+header, main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#notebook {
+	background-color: #f7f7f7;
+	width: var(--notebook-width);
+	position: relative;
+	box-sizing: border-box;
+}
+
+.blue-line:not(:first-child) {
+	margin-top: var(--blueLineMarginTop);
+}
+
+.blue-line {
+	color:blue;
+	border-style: solid;
+	border-color: #2417d9;
+	border-width: var(--blueLIneTopBottomBorder) 0px;
+	background-color: black;
+	width: 100%;
+}
+
+#red-line {
+	height: calc(var(--blueLineMarginTop)*(6 - 1) + var(--blueLIneTopBottomBorder)*2*6);
+	border-style: solid;
+	border-color: #fe838b;
+	border-width: 0px 2px;
+	width:0px;
+	position: absolute;
+	top:0;
+	left: 10%;
+}
+
+textarea {
+	background-color: transparent;
+	outline: none;
+	resize: none;
+	position: absolute;
+	width: calc(var(--notebook-width)*0.75);
+	height: calc(var(--blueLineMarginTop)*(6 - 2) + var(--blueLIneTopBottomBorder)*2*5);
+	top:0;
+	padding: 0;
+	border-width: 0;
+	right:0;
+	font-size: 26px;
+	font-family: 'Roboto Slab', serif;
+	left: var(--absoluteTextAreaLeftValue);
+	line-height: calc(var(--blueLineMarginTop) + var(--blueLIneTopBottomBorder)*2);
+}
+
+#date-and-time-area {
+	position: absolute;
+	left: var(--absoluteTextAreaLeftValue);
+	bottom: calc(var(--blueLIneTopBottomBorder)*2);
+	width:calc(100% - var(--absoluteTextAreaLeftValue));
+
+}
+
+button {	
+	height: var(--blueLineMarginTop);
+	background-color: #CD853F;
+	font-family: 'Roboto Slab', serif;
+	font-size: 15px;
+	padding-right: 2px;
+	padding-left: 2px;
+	margin: 0;
+	border-width: 2px;
+	border-color: #EEE8AA;
+	position: absolute;
+	right: 0;
+}
+
+input {
+	height: var(--blueLineMarginTop);
+	padding: 0;
+	border-width: 2px;
+	box-sizing: border-box;
+}
+
+
+#contain-notes {
+	display: flex;
+	justify-content: center;
+	margin: 40px;
+	flex-wrap: wrap;
+}
+
+.single_note {
+	background-image: url(images/notebg.png);
+	background-repeat: no-repeat;
+	width: 200px;
+	height: 260px;
+	position: relative;
+}
+
+.close_note {
+	position: absolute;
+	top: 20px;
+	right: 24px;			
+	font-size: 18px;
+	font-weight: 900;
+	color: #feff99;
+	background-color: black;
+	width: 25px;
+	height: 25px;
+	border-radius: 20%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;	
+}
+
+.close_note:hover {
+	color: #fddd3a;
+}
+
+.content {
+	position: absolute;
+	left: var(--absoluteNoteLeftValue);
+	top: 38px;
+	width: 80%;
+	height: 50%;
+	overflow: auto;
+	overflow-x: hidden;
+	margin-right: -10px;
+	word-break: break-word;
+}
+
+.date_input {
+	position: absolute;
+	left: var(--absoluteNoteLeftValue);
+	bottom: 45px;
+}
+
+.time_input {
+	position: absolute;
+	left: var(--absoluteNoteLeftValue);
+	bottom: 25px;
+}
+
+#for-alert-message {
+	position: relative;
+}
+
+#alert-user {
+	position: absolute;
+	top:40px;
+	right:80px;
+	font-size:30px;
+}
+
+#separate-label-from-button {
+	position: relative;
+}
+
+	</style>
+</head>
+<body>
+
+<header>
+	<h1>My Task Board</h1>
+</header>
+
+<main>
+<div id="notebook">
+	<!-- 6 blue lines -->
+	<div class="blue-line"></div>
+	<div class="blue-line"></div>
+	<div class="blue-line"></div>
+	<div class="blue-line"></div>
+	<div class="blue-line"></div>
+	<div class="blue-line"></div>
+
+	<div id="red-line"></div>
+
+	<form action="">
+		<label for="">
+			<textarea name="text-for-note" id="" cols="30" rows="3" placeholder="Describe your task here..." minlength="5" required=""></textarea>
+		</label>
+		<div id="date-and-time-area">
+		<div id="separate-label-from-button">
+			<label id="for-alert-message">
+				<span>Due to: please choose a deadline</span>
+				<input type="datetime-local" name="date-and-time" value="2018-10-31T23:59" required>
+				<span id="alert-user"></span>
+			</label>
+			<button>Add Note</button>
+		</div>
+		</div>
+	</form>
+</main>
+<!-- example of a note
+<div id="contain-notes">
+	<div class="single_note">	
+		<span class="close_note">✖</span>
+		<p class="content">ipsum dolor sit amet, consectetur adipisicing elit. Eligendi tempora nesciunt unde eos 	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad</p>
+		<span class="date_input">22-10-2017</span>
+		<span class="time_input">13:24</span>
+	  </div> 
+-->
+	
+<script>
+var objectsArrayBackup = localStorage.getItem('notes');
+if (objectsArrayBackup) {
+	var notes = JSON.parse(objectsArrayBackup);
+} else {
+	var notes = [
+	{
+		noteText: 'ipsum dolor sit amet, consectetur adipisicing elit.',
+		date: "2017-10-01",
+		time: "12:25"
+	}, {
+		noteText: 'File this project',
+		date: "2017-11-02",
+		time: "13:21"
+	}, {
+		noteText: 'Find a job',
+		date: "2017-12-03",
+		time: "09:35"
+	}	
+
+	];
+}
+
+var parentDiv = document.createElement('div'); 
+document.body.append(parentDiv);
+parentDiv.id = "contain-notes";
+
+function createNote (singleNote) {
+
+	var childDiv = document.createElement('div');
+	childDiv.classList.add("single_note"); 
+	parentDiv.appendChild(childDiv);
+
+	var spanElementClose = document.createElement('span');
+	spanElementClose.classList.add("close_note");
+	spanElementClose.textContent = "✖";
+	spanElementClose.addEventListener ("click", deleteNote);
+	//this comes instead of
+	//spanElementClose.addEventListener ("click", function (){
+	//	childDiv.remove();
+	//})
+	childDiv.appendChild(spanElementClose);
+
+
+	var noteContent = document.createElement('p');
+	noteContent.classList.add("content");
+	noteContent.textContent = singleNote.noteText;
+	childDiv.appendChild(noteContent);
+
+	var spanElementDate = document.createElement('span');
+	spanElementDate.classList.add("date_input");
+	var arrayOfDate = singleNote.date.split("-");
+	spanElementDate.textContent = arrayOfDate[2] + "/" + arrayOfDate[1] + "/" +arrayOfDate[0];
+	childDiv.appendChild(spanElementDate);
+
+
+	var spanElementTime = document.createElement('span');  
+	spanElementTime.classList.add("time_input");
+	spanElementTime.textContent = singleNote.time;
+	childDiv.appendChild(spanElementTime);
+}
+
+function deleteNote (event) { //delete it from array/screen/storage
+	var singleCreatedNote = event.target.parentNode;
+	var allCreatedNotes = document.querySelectorAll(".single_note")
+	var i = Array.from(allCreatedNotes).indexOf(singleCreatedNote);
+	//console.log(i);
+	notes.splice(i, 1);
+	//console.log(singleCreatedNote);
+	//console.log(notes);
+	singleCreatedNote.remove(); 
+	updateBackup(notes);
+}
+
+
+for (var i = 0; i < notes.length; i++) {
+	createNote(notes[i]);
+}
+
+document.querySelector("form").addEventListener ("submit", function (event){
+	event.preventDefault(); //the page will not refresh
+
+	var textInput = document.querySelector("[name=text-for-note]");
+	var dateTimeInput = document.querySelector("[name=date-and-time]");
+	var dateTimeInputValue = document.querySelector("[name=date-and-time]").value;
+
+	var getHoursAndMinutes = dateTimeInputValue.slice(11, 16);
+	var getDateOnly = dateTimeInputValue.slice(0, 10);
+
+	var newNoteObject = {
+		noteText: textInput.value,
+		date:getDateOnly,
+		time: getHoursAndMinutes,
+	}
+	console.log(newNoteObject);
+
+	if (!isFuture(dateTimeInputValue)) {
+		//event.preventDefault();
+		document.querySelector("[name=date-and-time]").style.color = "red";
+		document.querySelector("#alert-user").textContent = "Invalid deadline";
+		//dateTimeInput.setCustomValidity("Future has been confused with Past!");
+		//- does'nt work		
+		//alert("Date must be in the future");
+	} else {
+		document.querySelector("#alert-user").textContent = "";
+		document.querySelector("[name=date-and-time]").style.color = "black";
+		createNote(newNoteObject);
+		notes.push(newNoteObject);
+		updateBackup(notes);
+		console.log(notes);
+		document.querySelector("form").reset(); //the page does not refresh anyway but when the form is submitted by a click there's a need to "clean" it for a fresh start - reset provides that option
+	}
+
+})
+
+function updateBackup (array) {
+	localStorage.setItem('notes', JSON.stringify(array));
+}
+
+
+function isFuture (specificDateValue) {
+	var selectedDate = new Date(specificDateValue);
+		var now = new Date();
+	if (selectedDate.getTime() > now.getTime()) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+</script>
+</body>
+</html>
